@@ -8,9 +8,62 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroupItem } from '@/components/ui/radio-group'
 import { questionnaireData, type Question } from '@/data/questions'
-import { ChevronLeft, ChevronRight, Save, Send, RefreshCw } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  Save,
+  Send,
+  RefreshCw,
+  Wrench,
+  ShieldCheck,
+  MapPin,
+  Clock,
+  Timer,
+  DollarSign,
+  CreditCard,
+  Calendar,
+  AlertCircle,
+  Package,
+  Target,
+  MessageCircle,
+  Home,
+  FileText,
+  ClipboardCheck,
+  CheckCircle,
+  HelpCircle,
+  AlertTriangle,
+  ServerCrash
+} from 'lucide-react'
 
 const STORAGE_KEY = 'hjz-questionnaire-answers'
+
+// Map section names to Lucide icons
+const getSectionIcon = (section: string) => {
+  const iconMap: Record<string, any> = {
+    'Services Offered': Wrench,
+    'Gas Safety & Qualifications': ShieldCheck,
+    'Service Areas': MapPin,
+    'Operating Hours': Clock,
+    'Job Duration & Scheduling': Timer,
+    'Pricing & Deposits': DollarSign,
+    'Payment Methods & Deposit Collection': CreditCard,
+    'Appointments & Scheduling': Calendar,
+    'Emergency & Same-Day Work': AlertCircle,
+    'Materials & Parts': Package,
+    'Business Positioning': Target,
+    'Follow-Up & Communication': MessageCircle,
+    'Access & Property Requirements': Home,
+    'Policies & Legal': FileText,
+    'Assessments & Installations': ClipboardCheck,
+    'Booking Confirmation Details': CheckCircle,
+    'Common Customer Questions': HelpCircle,
+    'Special Situations': AlertTriangle,
+    'System Failure & Backup Plans': ServerCrash
+  }
+
+  const IconComponent = iconMap[section] || HelpCircle
+  return <IconComponent className="w-6 h-6 text-blue-600" />
+}
 
 export function Questionnaire() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -261,7 +314,7 @@ export function Questionnaire() {
         <Card>
           <CardHeader>
             <div className="flex items-center space-x-2 mb-2">
-              <span className="text-2xl">{currentQuestion.sectionEmoji}</span>
+              {getSectionIcon(currentQuestion.section)}
               <CardDescription>{currentQuestion.section}</CardDescription>
             </div>
             <CardTitle className="text-lg">{currentQuestion.question}</CardTitle>
@@ -282,7 +335,7 @@ export function Questionnaire() {
         </Card>
 
         {/* Navigation & Actions */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row gap-3 justify-between">
             <Button
               variant="outline"
@@ -336,15 +389,19 @@ export function Questionnaire() {
           </div>
 
           {/* Reset Button */}
-          <div className="flex justify-center">
-            <Button
-              variant="destructive"
-              onClick={handleReset}
-              className="w-full sm:w-auto"
-            >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Reset Questionnaire
-            </Button>
+          <div className="flex flex-col sm:flex-row justify-between">
+            <div className="hidden sm:block sm:flex-none"></div>
+            <div className="flex justify-center flex-1 sm:flex-none">
+              <Button
+                variant="destructive"
+                onClick={handleReset}
+                className="w-full sm:w-auto"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Reset Questionnaire
+              </Button>
+            </div>
+            <div className="hidden sm:block sm:flex-none"></div>
           </div>
         </div>
 
