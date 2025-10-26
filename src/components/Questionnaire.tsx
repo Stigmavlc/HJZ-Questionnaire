@@ -282,7 +282,7 @@ export function Questionnaire() {
         </Card>
 
         {/* Navigation & Actions */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-6">
           <div className="flex flex-col sm:flex-row gap-3 justify-between">
             <Button
               variant="outline"
