@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroupItem } from '@/components/ui/radio-group'
 import { questionnaireData, type Question } from '@/data/questions'
-import { ChevronLeft, ChevronRight, Save, Send } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Save, Send, RefreshCw } from 'lucide-react'
 
 const STORAGE_KEY = 'hjz-questionnaire-answers'
 
@@ -39,6 +39,16 @@ export function Questionnaire() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
     setShowSuccess(true)
     setTimeout(() => setShowSuccess(false), 2000)
+  }
+
+  // Reset questionnaire
+  const handleReset = () => {
+    if (window.confirm('Are you sure you want to reset the questionnaire? This will clear all your answers and cannot be undone.')) {
+      setAnswers({})
+      localStorage.removeItem(STORAGE_KEY)
+      setCurrentIndex(0)
+      setShowSuccess(false)
+    }
   }
 
   const handleAnswerChange = (questionId: string, value: any) => {
@@ -272,56 +282,70 @@ export function Questionnaire() {
         </Card>
 
         {/* Navigation & Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-between">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentIndex === 0}
-            className="flex-1 sm:flex-none"
-          >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Previous
-          </Button>
-
-          <div className="flex gap-3 flex-1 sm:flex-none">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 justify-between">
             <Button
-              variant="secondary"
-              onClick={saveAnswers}
-              className="flex-1"
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              className="flex-1 sm:flex-none"
             >
-              <Save className="w-4 h-4 mr-2" />
-              Save Progress
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Previous
             </Button>
 
-            {isAllAnswered && (
+            <div className="flex gap-3 flex-1 sm:flex-none">
               <Button
-                variant="default"
-                onClick={handleSendEmail}
-                className="flex-1 bg-green-600 hover:bg-green-700"
+                variant="secondary"
+                onClick={saveAnswers}
+                className="flex-1"
               >
-                <Send className="w-4 h-4 mr-2" />
-                Send to Ivan
+                <Save className="w-4 h-4 mr-2" />
+                Save Progress
+              </Button>
+
+              {isAllAnswered && (
+                <Button
+                  variant="default"
+                  onClick={handleSendEmail}
+                  className="flex-1 bg-green-600 hover:bg-green-700"
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  Send to Ivan
+                </Button>
+              )}
+            </div>
+
+            {!isLastQuestion ? (
+              <Button
+                onClick={handleNext}
+                className="flex-1 sm:flex-none"
+              >
+                Next
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => setCurrentIndex(0)}
+                className="flex-1 sm:flex-none"
+              >
+                Review from Start
               </Button>
             )}
           </div>
 
-          {!isLastQuestion ? (
+          {/* Reset Button */}
+          <div className="flex justify-center">
             <Button
-              onClick={handleNext}
-              className="flex-1 sm:flex-none"
+              variant="destructive"
+              onClick={handleReset}
+              className="w-full sm:w-auto"
             >
-              Next
-              <ChevronRight className="w-4 h-4 ml-2" />
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Reset Questionnaire
             </Button>
-          ) : (
-            <Button
-              variant="outline"
-              onClick={() => setCurrentIndex(0)}
-              className="flex-1 sm:flex-none"
-            >
-              Review from Start
-            </Button>
-          )}
+          </div>
         </div>
 
         {/* Completion Message */}
