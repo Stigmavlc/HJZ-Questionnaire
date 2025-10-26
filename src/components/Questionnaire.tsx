@@ -335,73 +335,67 @@ export function Questionnaire() {
         </Card>
 
         {/* Navigation & Actions */}
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col sm:flex-row gap-3 justify-between">
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-[auto_1fr_auto] items-stretch">
+          <Button
+            variant="outline"
+            onClick={handlePrevious}
+            disabled={currentIndex === 0}
+            className="w-full sm:w-auto sm:justify-self-start"
+          >
+            <ChevronLeft className="w-4 h-4 mr-2" />
+            Previous
+          </Button>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center w-full sm:justify-self-center">
             <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              className="flex-1 sm:flex-none"
+              variant="secondary"
+              onClick={saveAnswers}
+              className="w-full sm:w-auto"
             >
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              Previous
+              <Save className="w-4 h-4 mr-2" />
+              Save Progress
             </Button>
 
-            <div className="flex gap-3 flex-1 sm:flex-none">
+            {isAllAnswered && (
               <Button
-                variant="secondary"
-                onClick={saveAnswers}
-                className="flex-1"
+                variant="default"
+                onClick={handleSendEmail}
+                className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
               >
-                <Save className="w-4 h-4 mr-2" />
-                Save Progress
-              </Button>
-
-              {isAllAnswered && (
-                <Button
-                  variant="default"
-                  onClick={handleSendEmail}
-                  className="flex-1 bg-green-600 hover:bg-green-700"
-                >
-                  <Send className="w-4 h-4 mr-2" />
-                  Send to Ivan
-                </Button>
-              )}
-            </div>
-
-            {!isLastQuestion ? (
-              <Button
-                onClick={handleNext}
-                className="flex-1 sm:flex-none"
-              >
-                Next
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                onClick={() => setCurrentIndex(0)}
-                className="flex-1 sm:flex-none"
-              >
-                Review from Start
+                <Send className="w-4 h-4 mr-2" />
+                Send to Ivan
               </Button>
             )}
           </div>
 
+          {!isLastQuestion ? (
+            <Button
+              onClick={handleNext}
+              className="w-full sm:w-auto sm:justify-self-end"
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              onClick={() => setCurrentIndex(0)}
+              className="w-full sm:w-auto sm:justify-self-end"
+            >
+              Review from Start
+            </Button>
+          )}
+
           {/* Reset Button */}
-          <div className="flex flex-col sm:flex-row justify-between">
-            <div className="hidden sm:block sm:flex-none"></div>
-            <div className="flex justify-center flex-1 sm:flex-none">
-              <Button
-                variant="destructive"
-                onClick={handleReset}
-                className="w-full sm:w-auto"
-              >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Reset Questionnaire
-              </Button>
-            </div>
-            <div className="hidden sm:block sm:flex-none"></div>
+          <div className="flex justify-center sm:col-start-2 sm:col-end-3">
+            <Button
+              variant="destructive"
+              onClick={handleReset}
+              className="w-full sm:w-auto"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Reset Questionnaire
+            </Button>
           </div>
         </div>
 
